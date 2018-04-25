@@ -27,21 +27,3 @@ func (stringService) Count(_ context.Context, s string) int {
 	return len(s)
 }
 
-//For each method, we define request and response structs, capturing all of the input and output parameters respectively.
-type uppercaseRequest struct{
-	Str string `json:"str"`
-}
-
-type uppercaseResponse struct{
-	Str string `json:"str"`
-	Err error `json:"err"`
-}
-
-type countRequest struct{
-	Str string `json:"str"`
-}
-
-type countResponse struct{
-	Count int `json:"count"`
-}
-
