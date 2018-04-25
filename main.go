@@ -25,7 +25,7 @@ func main(){
 	http.Handle("/count", countHandler)
 	log.Fatal(http.ListenAndServe(":8080",nil))
 }
-
+//request and response decoder/encoders
 func decodeUppercaseRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var request uppercaseRequest
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
