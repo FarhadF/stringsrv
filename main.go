@@ -21,7 +21,9 @@ func main(){
 		decodeCountRequest,
 		encodeResponse,
 	)
+	//POST /uppercase -d '{"str":"string"}'
 	http.Handle("/uppercase", uppercaseHandler)
+	//POST /count -d '{"str":"string"}'
 	http.Handle("/count", countHandler)
 	log.Fatal(http.ListenAndServe(":8080",nil))
 }
