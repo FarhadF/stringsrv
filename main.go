@@ -13,9 +13,11 @@ import (
 func main(){
 	svc := stringService{}
 	logger := log.NewLogfmtLogger(os.Stderr)
-	var uppercase endpoint.Endpoint
+	var uppercase, count endpoint.Endpoint
 	uppercase = makeUppercaseEndpoint(svc)
 	uppercase = loggingMiddleware(log.With(logger, "method", "uppercase"))(uppercase)
+	count = makeCountEndpoint(svc)
+	count = loggingMiddleware(log.With(logger, "method", "count"))(count)
 	//each service method needs a handler
 	uppercaseHandler := httptransport.NewServer(
 		uppercase,
@@ -23,7 +25,7 @@ func main(){
 		encodeResponse,
 	)
 	countHandler := httptransport.NewServer(
-		makeCountEndpoint(svc),
+		count,
 		decodeCountRequest,
 		encodeResponse,
 	)
