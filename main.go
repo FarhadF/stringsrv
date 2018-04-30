@@ -3,29 +3,32 @@ package main
 import (
 	"net/http"
 	httptransport "github.com/go-kit/kit/transport/http"
-	"github.com/go-kit/kit/log"
 	"context"
 	"encoding/json"
-	"github.com/go-kit/kit/endpoint"
+	"github.com/rs/zerolog"
 	"os"
 )
 
 func main(){
-	svc := stringService{}
-	logger := log.NewLogfmtLogger(os.Stderr)
-	var uppercase, count endpoint.Endpoint
+	//zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
+	//logger := log.NewLogfmtLogger(os.Stderr)
+	var svc StringService
+	svc = stringService{}
+	svc = loggingMiddleware{logger, svc}
+	/*var uppercase, count endpoint.Endpoint
 	uppercase = makeUppercaseEndpoint(svc)
 	uppercase = loggingMiddleware(log.With(logger, "method", "uppercase"))(uppercase)
 	count = makeCountEndpoint(svc)
-	count = loggingMiddleware(log.With(logger, "method", "count"))(count)
+	count = loggingMiddleware(log.With(logger, "method", "count"))(count)*/
 	//each service method needs a handler
 	uppercaseHandler := httptransport.NewServer(
-		uppercase,
+		makeUppercaseEndpoint(svc),
 		decodeUppercaseRequest,
 		encodeResponse,
 	)
 	countHandler := httptransport.NewServer(
-		count,
+		makeCountEndpoint(svc),
 		decodeCountRequest,
 		encodeResponse,
 	)
@@ -33,7 +36,7 @@ func main(){
 	http.Handle("/uppercase", uppercaseHandler)
 	//POST /count -d '{"str":"string"}'
 	http.Handle("/count", countHandler)
-	logger.Log("err",http.ListenAndServe(":8081",nil))
+	logger.Info().Err(http.ListenAndServe(":8081",nil)).Msg("server failed to start")
 }
 //request and response decoder/encoders
 func decodeUppercaseRequest(_ context.Context, r *http.Request) (interface{}, error) {
