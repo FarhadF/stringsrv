@@ -11,10 +11,13 @@ import (
 
 func main(){
 	//zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	//create zerolog logger
 	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
 	//logger := log.NewLogfmtLogger(os.Stderr)
+	//svc is the interface for service
 	var svc StringService
 	svc = stringService{}
+	//logging middleware
 	svc = loggingMiddleware{logger, svc}
 	/*var uppercase, count endpoint.Endpoint
 	uppercase = makeUppercaseEndpoint(svc)

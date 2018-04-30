@@ -17,11 +17,13 @@ import (
 //	}
 //}
 
+//struct passing the logger
 type loggingMiddleware struct {
 	logger zerolog.Logger
 	next 	StringService
 }
 
+//each method will have its own logger for app logs
 func (mw loggingMiddleware)Uppercase(ctx context.Context, s string) (output string, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Info().Str(
@@ -33,6 +35,7 @@ func (mw loggingMiddleware)Uppercase(ctx context.Context, s string) (output stri
 	return
 }
 
+//each method will have its own logger for app logs
 func (mw loggingMiddleware)Count(ctx context.Context, s string) (output int) {
 	defer func(begin time.Time) {
 		mw.logger.Info().Str("method", "uppercase").Str("input", s).Int("output", output).Dur("took",
