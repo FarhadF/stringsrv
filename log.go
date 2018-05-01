@@ -38,8 +38,8 @@ func (mw loggingMiddleware)Uppercase(ctx context.Context, s string) (output stri
 //each method will have its own logger for app logs
 func (mw loggingMiddleware)Count(ctx context.Context, s string) (output int) {
 	defer func(begin time.Time) {
-		mw.logger.Info().Str("method", "uppercase").Str("input", s).Int("output", output).Dur("took",
-			time.Since(begin)).Msg("")
+		mw.logger.Info().Str("method", "uppercase").Str("input", s).Int("output",
+			output).Dur("took",	time.Since(begin)).Msg("")
 	}(time.Now())
 	output = mw.next.Count(ctx, s)
 	return
