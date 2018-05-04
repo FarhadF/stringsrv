@@ -16,7 +16,7 @@ func main(){
 	//zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	//create zerolog logger
 	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
-	//logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}) for pretty printing but inefficient
+	//logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}) //for pretty printing but inefficient
 
 
 	fieldKeys := []string{"method", "error"}
