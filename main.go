@@ -53,6 +53,7 @@ func main(){
 	count = makeCountEndpoint(svc)
 	count = loggingMiddleware(log.With(logger, "method", "count"))(count)*/
 	//each service method needs a handler
+	//todo: change the httprouter
 	uppercaseHandler := httptransport.NewServer(
 		makeUppercaseEndpoint(svc),
 		decodeUppercaseRequest,
